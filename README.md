@@ -1,12 +1,14 @@
 
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pulpería Don Pepe - MateKen PRO</title>
+<title>Pulpería Don Pepe MateKen PRO</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -26,7 +28,7 @@ padding:15px;
 .contenedor{
 background:white;
 width:100%;
-max-width:900px;
+max-width:950px;
 border-radius:25px;
 padding:20px;
 box-shadow:0 10px 30px rgba(0,0,0,.2);
@@ -34,7 +36,7 @@ box-shadow:0 10px 30px rgba(0,0,0,.2);
 
 h1{
 text-align:center;
-color:#ff6f00;
+color:#e65100;
 margin-bottom:15px;
 }
 
@@ -52,7 +54,6 @@ transform:translateY(-10px);
 
 .panel{
 display:flex;
-justify-content:space-between;
 gap:10px;
 flex-wrap:wrap;
 margin-bottom:15px;
@@ -62,14 +63,13 @@ margin-bottom:15px;
 flex:1;
 min-width:120px;
 background:#fff3e0;
-padding:10px;
+padding:12px;
 border-radius:15px;
 text-align:center;
 font-weight:bold;
 }
 
 .progreso{
-width:100%;
 height:18px;
 background:#ddd;
 border-radius:20px;
@@ -81,7 +81,7 @@ margin-bottom:15px;
 height:100%;
 width:0%;
 background:#4caf50;
-transition:.4s;
+transition:.5s;
 }
 
 .pregunta{
@@ -89,9 +89,17 @@ background:#fff8e1;
 padding:20px;
 border-radius:15px;
 font-size:22px;
+font-weight:bold;
 text-align:center;
 margin-bottom:15px;
-font-weight:bold;
+}
+
+.pista{
+background:#e3f2fd;
+padding:10px;
+border-radius:10px;
+text-align:center;
+margin-bottom:15px;
 }
 
 .opcion{
@@ -100,8 +108,8 @@ padding:15px;
 border:none;
 border-radius:12px;
 margin-bottom:10px;
-cursor:pointer;
 font-size:18px;
+cursor:pointer;
 background:#ffe0b2;
 transition:.3s;
 }
@@ -113,11 +121,11 @@ transform:scale(1.03);
 .boton{
 width:100%;
 padding:15px;
-background:#ff6f00;
-color:white;
-font-size:18px;
 border:none;
 border-radius:15px;
+background:#e65100;
+color:white;
+font-size:18px;
 cursor:pointer;
 margin-top:10px;
 }
@@ -128,16 +136,8 @@ text-align:center;
 }
 
 .insignia{
-font-size:60px;
+font-size:70px;
 margin:15px;
-}
-
-.pista{
-background:#e3f2fd;
-padding:10px;
-border-radius:10px;
-margin-bottom:10px;
-text-align:center;
 }
 
 @media(max-width:768px){
@@ -155,20 +155,26 @@ font-size:16px;
 }
 
 }
+
 </style>
+
 </head>
 
 <body>
 
 <div class="contenedor">
 
-<h1>🏪 Pulpería Don Pepe - MateKen PRO</h1>
+<h1>🏪 Pulpería Don Pepe MateKen PRO</h1>
 
 <div id="inicio">
 
-<div class="avatar">🤖</div>
+<div class="avatar">
+🤖
+</div>
 
-<button class="boton" onclick="iniciarJuego()">
+<button
+class="boton"
+onclick="iniciarAudio(); iniciarJuego();">
 ▶ Empezar Juego
 </button>
 
@@ -202,7 +208,9 @@ font-size:16px;
 <div class="barra" id="barra"></div>
 </div>
 
-<div class="avatar" id="avatar">🤖</div>
+<div class="avatar" id="avatar">
+🤖
+</div>
 
 <div class="pista" id="pista"></div>
 
@@ -210,23 +218,32 @@ font-size:16px;
 
 <div id="opciones"></div>
 
-<button class="boton" onclick="reiniciar()">
+<button
+class="boton"
+onclick="reiniciar()">
 🔄 Reiniciar
 </button>
 
 </div>
 
-<div id="resultado" class="resultado">
+<div
+id="resultado"
+class="resultado">
 
-<h2>🎉 Juego Finalizado 🎉</h2>
+<h2>🎉 Felicidades 🎉</h2>
 
-<div class="insignia" id="insignia"></div>
+<div
+class="insignia"
+id="insignia">
+</div>
 
 <h1 id="porcentaje"></h1>
 
 <p id="resumen"></p>
 
-<button class="boton" onclick="reiniciar()">
+<button
+class="boton"
+onclick="reiniciar()">
 🔄 Jugar Nuevamente
 </button>
 
@@ -236,154 +253,439 @@ font-size:16px;
 
 <script>
 
-let preguntas=[];
-let indice=0;
-let aciertos=0;
-let segundos=0;
+// =========================
+// VARIABLES GLOBALES
+// =========================
+
+let preguntas = [];
+let indice = 0;
+let aciertos = 0;
+let segundos = 0;
 let cronometro;
 
-function cordoba(valor){
-return "C$"+valor;
+// =========================
+// AUDIO
+// =========================
+
+let audioCtx;
+
+function iniciarAudio(){
+
+if(!audioCtx){
+
+audioCtx =
+new (
+window.AudioContext ||
+window.webkitAudioContext
+)();
+
 }
+
+if(audioCtx.state === "suspended"){
+audioCtx.resume();
+}
+
+}
+// =========================
+// SONIDO CORRECTO
+// =========================
+
+function sonidoCorrecto(){
+
+iniciarAudio();
+
+const osc =
+audioCtx.createOscillator();
+
+const gain =
+audioCtx.createGain();
+
+osc.type = "sine";
+
+osc.frequency.setValueAtTime(
+800,
+audioCtx.currentTime
+);
+
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+
+gain.gain.setValueAtTime(
+0.2,
+audioCtx.currentTime
+);
+
+gain.gain.exponentialRampToValueAtTime(
+0.001,
+audioCtx.currentTime + 0.3
+);
+
+osc.start();
+
+osc.stop(
+audioCtx.currentTime + 0.3
+);
+
+}
+
+// =========================
+// SONIDO ERROR
+// =========================
+
+function sonidoError(){
+
+iniciarAudio();
+
+const osc =
+audioCtx.createOscillator();
+
+const gain =
+audioCtx.createGain();
+
+osc.type = "square";
+
+osc.frequency.setValueAtTime(
+250,
+audioCtx.currentTime
+);
+
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+
+gain.gain.setValueAtTime(
+0.2,
+audioCtx.currentTime
+);
+
+gain.gain.exponentialRampToValueAtTime(
+0.001,
+audioCtx.currentTime + 0.4
+);
+
+osc.start();
+
+osc.stop(
+audioCtx.currentTime + 0.4
+);
+
+}
+
+// =========================
+// FORMATO CÓRDOBAS
+// =========================
+
+function cordoba(valor){
+
+return "C$" + valor;
+
+}
+
+// =========================
+// NÚMEROS ALEATORIOS
+// =========================
 
 function aleatorio(min,max){
-return Math.floor(Math.random()*(max-min+1))+min;
+
+return Math.floor(
+Math.random() *
+(max-min+1)
+)+min;
+
 }
 
-function mezclar(arr){
-return arr.sort(()=>Math.random()-0.5);
+// =========================
+// MEZCLAR OPCIONES
+// =========================
+
+function mezclar(array){
+
+return array.sort(
+()=>Math.random()-0.5
+);
+
 }
+
+// =========================
+// GENERAR BANCO
+// =========================
 
 function generarPreguntas(){
 
-let banco=[];
+let banco = [];
 
-for(let i=0;i<100;i++){
+for(let i=0;i<120;i++){
 
-let cantidad=aleatorio(2,10);
-let precio=aleatorio(10,80);
+let cantidad =
+aleatorio(2,10);
+
+let precio =
+aleatorio(10,80);
 
 banco.push({
+
 icono:"🥤",
-pregunta:`Compraste ${cantidad} refrescos a ${cordoba(precio)} cada uno. ¿Cuánto pagaste?`,
-respuesta:cantidad*precio,
-pista:"Multiplica cantidad × precio"
+
+pregunta:
+`Compraste ${cantidad}
+refrescos a
+${cordoba(precio)}
+cada uno.
+¿Cuánto pagaste?`,
+
+respuesta:
+cantidad * precio,
+
+pista:
+"Multiplica cantidad × precio"
+
 });
 
 banco.push({
+
 icono:"🍪",
-pregunta:`Compraste ${cantidad} paquetes de galletas a ${cordoba(precio)} cada uno. ¿Total?`,
-respuesta:cantidad*precio,
-pista:"Multiplicación"
+
+pregunta:
+`Compraste ${cantidad}
+paquetes de galletas
+a ${cordoba(precio)}
+cada uno.
+¿Cuál es el total?`,
+
+respuesta:
+cantidad * precio,
+
+pista:
+"Multiplicación"
+
 });
 
 banco.push({
+
 icono:"🍫",
-pregunta:`Tenías ${cordoba(precio*10)} y gastaste ${cordoba(precio)}. ¿Cuánto te queda?`,
-respuesta:(precio*10)-precio,
-pista:"Resta"
+
+pregunta:
+`Tenías
+${cordoba(precio*10)}
+y gastaste
+${cordoba(precio)}.
+¿Cuánto te queda?`,
+
+respuesta:
+(precio*10)-precio,
+
+pista:
+"Resta"
+
 });
 
 banco.push({
+
+icono:"🧃",
+
+pregunta:
+`Hay
+${cantidad*2}
+jugos y llegan
+${precio}
+más.
+¿Cuántos hay ahora?`,
+
+respuesta:
+(cantidad*2)+precio,
+
+pista:
+"Suma"
+
+});
+
+banco.push({
+
 icono:"🥚",
-pregunta:`Hay ${cantidad*2} huevos y llegan ${precio}. ¿Cuántos hay ahora?`,
-respuesta:(cantidad*2)+precio,
-pista:"Suma"
+
+pregunta:
+`Se reparten
+${cordoba(cantidad*100)}
+entre
+${cantidad}
+personas.
+¿Cuánto recibe
+cada una?`,
+
+respuesta:
+100,
+
+pista:
+"División"
+
 });
 
 }
 
-return mezclar(banco).slice(0,10);
+return mezclar(banco)
+.slice(0,10);
 
 }
+
+// =========================
+// INICIAR JUEGO
+// =========================
 
 function iniciarJuego(){
 
-document.getElementById("inicio").style.display="none";
-document.getElementById("juego").style.display="block";
+document.getElementById(
+"inicio"
+).style.display="none";
 
-preguntas=generarPreguntas();
+document.getElementById(
+"juego"
+).style.display="block";
 
-indice=0;
-aciertos=0;
-segundos=0;
+preguntas =
+generarPreguntas();
 
-cronometro=setInterval(()=>{
+indice = 0;
+aciertos = 0;
+segundos = 0;
+
+cronometro =
+setInterval(()=>{
+
 segundos++;
-document.getElementById("tiempo").innerText=segundos;
+
+document.getElementById(
+"tiempo"
+).innerText =
+segundos;
+
 },1000);
 
 mostrarPregunta();
 
 }
+// =========================
+// MOSTRAR PREGUNTA
+// =========================
 
 function mostrarPregunta(){
 
-let p=preguntas[indice];
+let p =
+preguntas[indice];
 
-document.getElementById("numero").innerText=indice+1;
+document.getElementById(
+"numero"
+).innerText =
+indice + 1;
 
-document.getElementById("pregunta").innerHTML=
-`${p.icono} ${p.pregunta}`;
+document.getElementById(
+"pregunta"
+).innerHTML =
+`${p.icono}
+${p.pregunta}`;
 
-document.getElementById("pista").innerHTML=
-`💡 ${p.pista}`;
+document.getElementById(
+"pista
+).innerHTML =
+"💡 " + p.pista;
 
-document.getElementById("barra").style.width=
-(indice*10)+"%";
+document.getElementById(
+"barra"
+).style.width =
+(indice * 10) + "%";
 
-let opciones=[
+let opciones = [
+
 p.respuesta,
-p.respuesta+aleatorio(5,30),
-Math.max(1,p.respuesta-aleatorio(5,20)),
-p.respuesta+aleatorio(31,50)
+
+p.respuesta +
+aleatorio(5,25),
+
+Math.max(
+1,
+p.respuesta -
+aleatorio(3,15)
+),
+
+p.respuesta +
+aleatorio(26,50)
+
 ];
 
-opciones=mezclar(opciones);
+opciones =
+mezclar(opciones);
 
-let html="";
+let html = "";
 
 opciones.forEach(valor=>{
 
-html+=`
-<button class="opcion"
+html += `
+
+<button
+class="opcion"
 onclick="verificar(${valor})">
+
 ${cordoba(valor)}
+
 </button>
+
 `;
 
 });
 
-document.getElementById("opciones").innerHTML=html;
+document.getElementById(
+"opciones"
+).innerHTML = html;
 
 }
 
+// =========================
+// VERIFICAR RESPUESTA
+// =========================
+
 function verificar(valor){
 
-let correcta=preguntas[indice].respuesta;
+let correcta =
+preguntas[indice]
+.respuesta;
 
-if(valor===correcta){
+if(valor === correcta){
 
 aciertos++;
 
-document.getElementById("avatar").innerText="🤖🎉";
+sonidoCorrecto();
 
-document.getElementById("puntos").innerText=
-aciertos*10;
+document.getElementById(
+"avatar"
+).innerText =
+"🤖🎉";
+
+document.getElementById(
+"puntos"
+).innerText =
+aciertos * 10;
 
 }else{
 
-document.getElementById("avatar").innerText="🤖😕";
+sonidoError();
+
+document.getElementById(
+"avatar"
+).innerText =
+"🤖😕";
 
 }
 
 setTimeout(()=>{
-document.getElementById("avatar").innerText="🤖";
+
+document.getElementById(
+"avatar"
+).innerText =
+"🤖";
+
 },500);
 
 indice++;
 
-if(indice>=10){
+if(indice >= 10){
 
 finalizar();
 
@@ -394,44 +696,95 @@ mostrarPregunta();
 }
 
 }
+// =========================
+// FINALIZAR JUEGO
+// =========================
 
 function finalizar(){
 
-clearInterval(cronometro);
+clearInterval(
+cronometro
+);
 
-document.getElementById("juego").style.display="none";
-document.getElementById("resultado").style.display="block";
+document.getElementById(
+"juego"
+).style.display =
+"none";
 
-let porcentaje=aciertos*10;
+document.getElementById(
+"resultado"
+).style.display =
+"block";
 
-document.getElementById("porcentaje").innerText=
-porcentaje+"%";
+let porcentaje =
+aciertos * 10;
 
-let insignia="🥉 Aprendiz";
+document.getElementById(
+"porcentaje"
+).innerText =
+porcentaje + "%";
 
-if(porcentaje>=40)
-insignia="🥇 Matemático";
+// =========================
+// INSIGNIAS
+// =========================
 
-if(porcentaje>=60)
-insignia="🏆 Experto";
+let insignia =
+"🥉 Aprendiz";
 
-if(porcentaje>=80)
-insignia="👑 Maestro MateKen";
+if(porcentaje >= 40){
 
-document.getElementById("insignia").innerText=
+insignia =
+"🥇 Matemático";
+
+}
+
+if(porcentaje >= 60){
+
+insignia =
+"🏆 Experto";
+
+}
+
+if(porcentaje >= 80){
+
+insignia =
+"👑 Maestro MateKen";
+
+}
+
+document.getElementById(
+"insignia"
+).innerText =
 insignia;
 
-document.getElementById("resumen").innerHTML=
+document.getElementById(
+"resumen"
+).innerHTML =
+
 `
-✔ Correctas: ${aciertos}<br>
-❌ Incorrectas: ${10-aciertos}<br>
-⏱ Tiempo: ${segundos} segundos
+✔ Correctas:
+${aciertos}
+<br>
+
+❌ Incorrectas:
+${10-aciertos}
+<br>
+
+⏱ Tiempo:
+${segundos}
+segundos
 `;
 
 }
 
+// =========================
+// REINICIAR
+// =========================
+
 function reiniciar(){
+
 location.reload();
+
 }
 
 </script>
