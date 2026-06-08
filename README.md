@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pulpería Don Pepe MateKen PRO</title>
+<title>Supermercado MateKen PRO Ultra</title>
 
 <style>
 
@@ -17,7 +17,7 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#ff9800,#ffc107);
+background:linear-gradient(135deg,#4caf50,#8bc34a);
 min-height:100vh;
 display:flex;
 justify-content:center;
@@ -28,7 +28,7 @@ padding:15px;
 .contenedor{
 background:white;
 width:100%;
-max-width:950px;
+max-width:1000px;
 border-radius:25px;
 padding:20px;
 box-shadow:0 10px 30px rgba(0,0,0,.2);
@@ -36,12 +36,12 @@ box-shadow:0 10px 30px rgba(0,0,0,.2);
 
 h1{
 text-align:center;
-color:#e65100;
+color:#2e7d32;
 margin-bottom:15px;
 }
 
 .avatar{
-font-size:80px;
+font-size:85px;
 text-align:center;
 animation:flotar 2s infinite;
 }
@@ -62,7 +62,7 @@ margin-bottom:15px;
 .caja{
 flex:1;
 min-width:120px;
-background:#fff3e0;
+background:#e8f5e9;
 padding:12px;
 border-radius:15px;
 text-align:center;
@@ -70,7 +70,7 @@ font-weight:bold;
 }
 
 .progreso{
-height:18px;
+height:20px;
 background:#ddd;
 border-radius:20px;
 overflow:hidden;
@@ -85,7 +85,7 @@ transition:.5s;
 }
 
 .pregunta{
-background:#fff8e1;
+background:#f1f8e9;
 padding:20px;
 border-radius:15px;
 font-size:22px;
@@ -95,7 +95,7 @@ margin-bottom:15px;
 }
 
 .pista{
-background:#e3f2fd;
+background:#fff8e1;
 padding:10px;
 border-radius:10px;
 text-align:center;
@@ -110,7 +110,7 @@ border-radius:12px;
 margin-bottom:10px;
 font-size:18px;
 cursor:pointer;
-background:#ffe0b2;
+background:#c8e6c9;
 transition:.3s;
 }
 
@@ -123,7 +123,7 @@ width:100%;
 padding:15px;
 border:none;
 border-radius:15px;
-background:#e65100;
+background:#2e7d32;
 color:white;
 font-size:18px;
 cursor:pointer;
@@ -150,10 +150,6 @@ font-size:60px;
 font-size:18px;
 }
 
-.opcion{
-font-size:16px;
-}
-
 }
 
 </style>
@@ -164,7 +160,7 @@ font-size:16px;
 
 <div class="contenedor">
 
-<h1>🏪 Pulpería Don Pepe MateKen PRO</h1>
+<h1>🛒 Supermercado MateKen PRO Ultra</h1>
 
 <div id="inicio">
 
@@ -226,16 +222,11 @@ onclick="reiniciar()">
 
 </div>
 
-<div
-id="resultado"
-class="resultado">
+<div id="resultado" class="resultado">
 
-<h2>🎉 Felicidades 🎉</h2>
+<h2>🎉 Excelente Trabajo 🎉</h2>
 
-<div
-class="insignia"
-id="insignia">
-</div>
+<div id="insignia" class="insignia"></div>
 
 <h1 id="porcentaje"></h1>
 
@@ -253,19 +244,11 @@ onclick="reiniciar()">
 
 <script>
 
-// =========================
-// VARIABLES GLOBALES
-// =========================
-
-let preguntas = [];
-let indice = 0;
-let aciertos = 0;
-let segundos = 0;
+let preguntas=[];
+let indice=0;
+let aciertos=0;
+let segundos=0;
 let cronometro;
-
-// =========================
-// AUDIO
-// =========================
 
 let audioCtx;
 
@@ -274,20 +257,20 @@ function iniciarAudio(){
 if(!audioCtx){
 
 audioCtx =
-new (
+new(
 window.AudioContext ||
 window.webkitAudioContext
 )();
 
 }
 
-if(audioCtx.state === "suspended"){
+if(audioCtx.state==="suspended"){
 audioCtx.resume();
 }
 
 }
 // =========================
-// SONIDO CORRECTO
+// SONIDOS
 // =========================
 
 function sonidoCorrecto(){
@@ -303,7 +286,7 @@ audioCtx.createGain();
 osc.type = "sine";
 
 osc.frequency.setValueAtTime(
-800,
+850,
 audioCtx.currentTime
 );
 
@@ -327,10 +310,6 @@ audioCtx.currentTime + 0.3
 );
 
 }
-
-// =========================
-// SONIDO ERROR
-// =========================
 
 function sonidoError(){
 
@@ -345,7 +324,7 @@ audioCtx.createGain();
 osc.type = "square";
 
 osc.frequency.setValueAtTime(
-250,
+220,
 audioCtx.currentTime
 );
 
@@ -371,7 +350,7 @@ audioCtx.currentTime + 0.4
 }
 
 // =========================
-// FORMATO CÓRDOBAS
+// UTILIDADES
 // =========================
 
 function cordoba(valor){
@@ -379,10 +358,6 @@ function cordoba(valor){
 return "C$" + valor;
 
 }
-
-// =========================
-// NÚMEROS ALEATORIOS
-// =========================
 
 function aleatorio(min,max){
 
@@ -393,10 +368,6 @@ Math.random() *
 
 }
 
-// =========================
-// MEZCLAR OPCIONES
-// =========================
-
 function mezclar(array){
 
 return array.sort(
@@ -406,30 +377,33 @@ return array.sort(
 }
 
 // =========================
-// GENERAR BANCO
+// BANCO DE PREGUNTAS
 // =========================
 
 function generarPreguntas(){
 
-let banco = [];
+let banco=[];
 
-for(let i=0;i<120;i++){
+for(let i=0;i<150;i++){
 
 let cantidad =
-aleatorio(2,10);
+aleatorio(2,12);
 
 let precio =
-aleatorio(10,80);
+aleatorio(10,150);
+
+// 🍎 MANZANAS
 
 banco.push({
 
-icono:"🥤",
+icono:"🍎",
 
 pregunta:
-`Compraste ${cantidad}
-refrescos a
+`Compraste
+${cantidad}
+manzanas a
 ${cordoba(precio)}
-cada uno.
+cada una.
 ¿Cuánto pagaste?`,
 
 respuesta:
@@ -440,14 +414,17 @@ pista:
 
 });
 
+// 🍌 BANANOS
+
 banco.push({
 
-icono:"🍪",
+icono:"🍌",
 
 pregunta:
-`Compraste ${cantidad}
-paquetes de galletas
-a ${cordoba(precio)}
+`Compraste
+${cantidad}
+bananos a
+${cordoba(precio)}
 cada uno.
 ¿Cuál es el total?`,
 
@@ -459,16 +436,18 @@ pista:
 
 });
 
+// 🍍 PIÑAS
+
 banco.push({
 
-icono:"🍫",
+icono:"🍍",
 
 pregunta:
 `Tenías
 ${cordoba(precio*10)}
-y gastaste
+y compraste una piña por
 ${cordoba(precio)}.
-¿Cuánto te queda?`,
+¿Cuánto dinero queda?`,
 
 respuesta:
 (precio*10)-precio,
@@ -478,14 +457,16 @@ pista:
 
 });
 
+// 🥭 MANGOS
+
 banco.push({
 
-icono:"🧃",
+icono:"🥭",
 
 pregunta:
 `Hay
 ${cantidad*2}
-jugos y llegan
+mangos y llegan
 ${precio}
 más.
 ¿Cuántos hay ahora?`,
@@ -498,24 +479,69 @@ pista:
 
 });
 
+// 🍊 NARANJAS
+
 banco.push({
 
-icono:"🥚",
+icono:"🍊",
 
 pregunta:
 `Se reparten
 ${cordoba(cantidad*100)}
 entre
 ${cantidad}
-personas.
-¿Cuánto recibe
-cada una?`,
+clientes.
+¿Cuánto recibe cada uno?`,
 
 respuesta:
 100,
 
 pista:
 "División"
+
+});
+
+// 🥛 LECHE
+
+banco.push({
+
+icono:"🥛",
+
+pregunta:
+`Compraste
+${cantidad}
+leches a
+${cordoba(precio)}
+cada una.
+¿Cuánto pagaste?`,
+
+respuesta:
+cantidad * precio,
+
+pista:
+"Multiplicación"
+
+});
+
+// 🧀 QUESO
+
+banco.push({
+
+icono:"🧀",
+
+pregunta:
+`Compraste
+${cantidad}
+quesos a
+${cordoba(precio)}
+cada uno.
+¿Cuál es el total?`,
+
+respuesta:
+cantidad * precio,
+
+pista:
+"Multiplica"
 
 });
 
@@ -583,7 +609,7 @@ document.getElementById(
 ${p.pregunta}`;
 
 document.getElementById(
-"pista
+"pista"
 ).innerHTML =
 "💡 " + p.pista;
 
@@ -597,16 +623,16 @@ let opciones = [
 p.respuesta,
 
 p.respuesta +
-aleatorio(5,25),
+aleatorio(10,40),
 
 Math.max(
 1,
 p.respuesta -
-aleatorio(3,15)
+aleatorio(5,25)
 ),
 
 p.respuesta +
-aleatorio(26,50)
+aleatorio(41,80)
 
 ];
 
@@ -633,7 +659,8 @@ ${cordoba(valor)}
 
 document.getElementById(
 "opciones"
-).innerHTML = html;
+).innerHTML =
+html;
 
 }
 
@@ -724,10 +751,6 @@ document.getElementById(
 ).innerText =
 porcentaje + "%";
 
-// =========================
-// INSIGNIAS
-// =========================
-
 let insignia =
 "🥉 Aprendiz";
 
@@ -752,6 +775,13 @@ insignia =
 
 }
 
+if(porcentaje === 100){
+
+insignia =
+"🌟 Super Campeón";
+
+}
+
 document.getElementById(
 "insignia"
 ).innerText =
@@ -773,6 +803,10 @@ ${10-aciertos}
 ⏱ Tiempo:
 ${segundos}
 segundos
+<br>
+
+🛒 Nivel:
+Supermercado PRO Ultra
 `;
 
 }
