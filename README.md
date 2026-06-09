@@ -1,5 +1,4 @@
-
-<html lang="es">
+<html lang="es-NI">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -74,14 +73,19 @@ let questions=[],index=0,correct=0,timer=0,intv;
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function shuffle(a){return a.sort(()=>Math.random()-0.5);}
 
+// Formateador específico para Córdoba Nicaragüense
+function formatC(valor) {
+  return "C$ " + valor.toLocaleString('es-NI');
+}
+
 function buildBank(){
 let bank=[];
 for(let i=0;i<20;i++){
  let a=rand(2,9), b=rand(2,9);
- bank.push({q:`🥤 Compraste ${a} refrescos de C$${b*5}. ¿Cuánto pagaste?`,a:a*(b*5),h:"Multiplicación"});
- bank.push({q:`🍪 Tenías C$${a*50} y gastaste C$${b*10}. ¿Cuánto queda?`,a:a*50-b*10,h:"Resta"});
+ bank.push({q:`🥤 Compraste ${a} refrescos de ${formatC(b*5)}. ¿Cuánto pagaste?`,a:a*(b*5),h:"Multiplicación"});
+ bank.push({q:`🍪 Tenías ${formatC(a*50)} y gastaste ${formatC(b*10)}. ¿Cuánto queda?`,a:a*50-b*10,h:"Resta"});
  bank.push({q:`🧃 Hay ${a*2} jugos y ${b*3} gaseosas. ¿Cuántas bebidas hay?`,a:a*2+b*3,h:"Suma"});
- bank.push({q:`🍫 Se reparten C$${a*b*10} entre ${a} personas. ¿Cuánto recibe cada una?`,a:(a*b*10)/a,h:"División"});
+ bank.push({q:`🍫 Se reparten ${formatC(a*b*10)} entre ${a} personas. ¿Cuánto recibe cada una?`,a:(a*b*10)/a,h:"División"});
 }
 return shuffle(bank).slice(0,10);
 }
@@ -112,7 +116,7 @@ function loadQ(){
  options.innerHTML="";
  opts.forEach(v=>{
   let b=document.createElement("button");
-  b.textContent="C$"+v;
+  b.textContent=formatC(v);
   b.onclick=()=>answer(v);
   options.appendChild(b);
  });
