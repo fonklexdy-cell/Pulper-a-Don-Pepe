@@ -73,9 +73,9 @@ let questions=[],index=0,correct=0,timer=0,intv;
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function shuffle(a){return a.sort(()=>Math.random()-0.5);}
 
-// Formateador específico para Córdoba Nicaragüense
+// Formateador exacto para Córdoba Nicaragüense
 function formatC(valor) {
-  return "C$ " + valor.toLocaleString('es-NI');
+  return "C$ " + valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function buildBank(){
